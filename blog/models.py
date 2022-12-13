@@ -11,6 +11,28 @@ class PostQuerySet(models.QuerySet):
             .order_by('published_at')
         return posts_at_year
 
+    def popular(self):
+        return self.annotate(num_likes=Count('likes')).order_by('-num_likes')
+
+    def fetch_with_comments_count(self):
+        '''
+        Combining multiple aggregations with annotate() can degrade the speed
+        of the query, due to multiplying the rows by some left outer joins.
+        This function counts the number of comments. It should be used instead
+        of the second subsequent annotate(), because it uses
+        annotate() in a separate query.
+        '''
+        posts_ids = [post.id for post in self]
+        ids_and_comments = Post.objects.filter(id__in=posts_ids)\
+            .annotate(num_comments=Count('comments'))\
+            .values_list('id', 'num_comments')
+
+        num_comments_for_posts_ids = dict(ids_and_comments)
+        for post in self:
+            post.num_comments = num_comments_for_posts_ids[post.id]
+
+        return self
+
 
 class TagQuerySet(models.QuerySet):
 
