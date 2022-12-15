@@ -41,8 +41,8 @@ def index(request):
     most_popular_posts = posts.popular()[:5].fetch_with_comments_count()
 
     fresh_posts = posts.annotate(num_comments=Count('comments'))\
-        .order_by('published_at')
-    most_fresh_posts = list(fresh_posts)[-5:]
+        .order_by('-published_at')
+    most_fresh_posts = fresh_posts[:5]
 
     most_popular_tags = Tag.objects.popular()[:5]
     most_popular_tags = most_popular_tags.annotate(num_posts=Count('posts'))
