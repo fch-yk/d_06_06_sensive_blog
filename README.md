@@ -1,47 +1,63 @@
-# Блог им. Юрия Григорьевича
+# Django blog optimization
 
-Блог о коммерческом успехе Юрия Григорьевича. Делюсь советами по бизнесу, жизни и о воспитании детей.
+Django-based website.
 
 ![Скриншот](screenshots/site.png)
 
-## Запуск
+## Prerequisites
 
-Для запуска сайта вам понадобится Python третьей версии.
+Python 3.11 is required.
 
-Скачайте код с GitHub. Установите зависимости:
+## Installing
 
-```sh
+- Download the project files.
+- It is recommended to use [venv](https://docs.python.org/3/library/venv.html?highlight=venv#module-venv) for project isolation.
+- Set up packages:
+
+```bash
 pip install -r requirements.txt
 ```
 
-Создайте базу данных SQLite
+Create SQLite database:
 
-```sh
-python3 manage.py migrate
+```bash
+python manage.py migrate
 ```
 
-Запустите разработческий сервер
+- Set up environmental variables in your operating system or in the .env file. The variables are:
 
+  - `DEBUG` (optional, `True` by default)
+  - `SECRET_KEY` (optional, `REPLACE_ME` by default)
+  - `ALLOWED_HOSTS` (obligatory when `DEBUG` is set to `False`)
+  - `DATABASE` - database address (optional, `sqlite:///db.sqlite3` by default), see [also](https://github.com/jacobian/dj-database-url)
+
+To set up variables in .env file, create it in the root directory of the project and fill it up like this:
+
+```bash
+DEBUG=True
+SECRET_KEY=REPLACE_ME
+ALLOWED_HOSTS=localhost,127.0.0.1
+DATABASE=sqlite:///db.sqlite3
 ```
-python3 manage.py runserver
+
+- Create a superuser:
+
+```bash
+python manage.py createsuperuser
 ```
 
-## Переменные окружения
+## Using
 
-Часть настроек проекта берётся из переменных окружения. Чтобы их определить, создайте файл `.env` рядом с `manage.py` и запишите туда данные в таком формате: `ПЕРЕМЕННАЯ=значение`.
+- Run a development server:
 
-Доступны 3 переменные:
-- `DEBUG` — дебаг-режим. Поставьте `True`, чтобы увидеть отладочную информацию в случае ошибки.
-- `SECRET_KEY` — секретный ключ проекта
-- `DATABASE_FILEPATH` — полный путь к файлу базы данных SQLite, например: `/home/user/schoolbase.sqlite3`
-- `ALLOWED_HOSTS` — см [документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
+```bash
+python manage.py runserver
+```
 
+- Go to [the admin site](http://127.0.0.1:8000/admin/) and fill the base;
+- Go to [the site main page](http://127.0.0.1:8000/).
 
-## Цели проекта
+## Project goals
 
-Код написан в учебных целях — для курса по Python и веб-разработке на сайте [Devman](https://dvmn.org).
-
-В частности, репозиторий используется:
-
-- В уроке "Оптимизируем сайт" курса [Знакомство с Django: ORM](https://dvmn.org/modules/django-orm/).
-- В туториале [Превью для ImageField в админке](https://devman.org/encyclopedia/django/how-to-setup-image-preview/)
+The project was created for educational purposes.
+It's a lesson for python and web developers at [Devman](https://dvmn.org).
